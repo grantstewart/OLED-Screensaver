@@ -9,7 +9,7 @@ function initializeCastApi() {
     // Ensure the Cast SDK is loaded
     if (typeof cast !== 'undefined' && typeof chrome !== 'undefined') {
         cast.framework.CastContext.getInstance().setOptions({
-            receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID || 'YOUR_APPLICATION_ID',
+            receiverApplicationId: 'A54AFFA1', // Directly use your custom application ID
             autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
         });
 
@@ -24,6 +24,7 @@ function initializeCastApi() {
         console.error('Cast SDK not available');
     }
 }
+
 
 // DOMContentLoaded event to ensure the HTML is fully parsed before accessing elements
 document.addEventListener('DOMContentLoaded', function() {
