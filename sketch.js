@@ -1,3 +1,4 @@
+// This function will be called once the Cast SDK is available
 window['__onGCastApiAvailable'] = function(isAvailable) {
     if (isAvailable) {
         initializeCastApi();
@@ -5,18 +6,32 @@ window['__onGCastApiAvailable'] = function(isAvailable) {
 };
 
 function initializeCastApi() {
-    cast.framework.CastContext.getInstance().setOptions({
-        receiverApplicationId: chrome.cast.media.0FB43A87,
-        autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-    });
+    // Ensure the Cast SDK is loaded
+    if (typeof cast !== 'undefined' && typeof chrome !== 'undefined') {
+        cast.framework.CastContext.getInstance().setOptions({
+            receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID || 'YOUR_APPLICATION_ID',
+            autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+        });
 
-    const castButton = document.getElementById('castButton');
-    castButton.onclick = () => cast.framework.CastContext.getInstance().requestSession();
+        // Setup the Cast button click handler
+        const castButton = document.getElementById('castButton');
+        castButton.addEventListener('click', () => {
+            cast.framework.CastContext.getInstance().requestSession().catch((err) => {
+                console.error('Cast request session failed', err);
+            });
+        });
+    } else {
+        console.error('Cast SDK not available');
+    }
 }
 
-// Add any additional logic for your sketch.js content below
+// DOMContentLoaded event to ensure the HTML is fully parsed before accessing elements
 document.addEventListener('DOMContentLoaded', function() {
-    // Example content logic
+    // Additional logic for your sketch.js content
     const content = document.getElementById('content');
-    content.innerHTML += '<p>Ready to cast. Click the Cast button to start.</p>';
+    if(content) {
+        content.innerHTML += '<p>Ready to cast. Click the Cast button to start.</p>';
+    } else {
+        console.error('Content div not found');
+    }
 });
