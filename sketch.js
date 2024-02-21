@@ -1,40 +1,32 @@
-// This function will be called once the Cast SDK is available
+// Assuming you've included the appropriate Cast SDK in your sender app
+const applicationID = 'A54AFFA1'; // Your App ID from the Google Cast SDK Developer Console
+
+/**
+ * Initialize Cast API
+ */
 window['__onGCastApiAvailable'] = function(isAvailable) {
     if (isAvailable) {
         initializeCastApi();
     }
 };
 
-
 function initializeCastApi() {
-    // Ensure the Cast SDK is loaded
-    if (typeof cast !== 'undefined' && typeof chrome !== 'undefined') {
-        cast.framework.CastContext.getInstance().setOptions({
-            receiverApplicationId: 'A54AFFA1', // Directly use your custom application ID
-            autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-        });
-
-        // Setup the Cast button click handler
-        const castButton = document.getElementById('castButton');
-        castButton.addEventListener('click', () => {
-            cast.framework.CastContext.getInstance().requestSession().catch((err) => {
-                console.error('Cast request session failed', err);
-            });
-        });
-    } else {
-        console.error('Cast SDK not available');
-    }
+    cast.framework.CastContext.getInstance().setOptions({
+        receiverApplicationId: applicationID,
+        autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+    });
 }
 
+// Example function to send a message to the receiver
+function sendMessage(message) {
+    const session = cast.framework.CastContext.getInstance().getCurrentSession();
+    session.sendMessage('urn:x-cast:com.example.custom', message).then(
+        function() { console.log('Message sent: ', message); },
+        function(error) { console.log('Error sending message: ', error); }
+    );
+}
 
-
-// DOMContentLoaded event to ensure the HTML is fully parsed before accessing elements
-document.addEventListener('DOMContentLoaded', function() {
-    // Additional logic for your sketch.js content
-    const content = document.getElementById('content');
-    if(content) {
-        content.innerHTML += '<p>Ready to cast. Click the Cast button to start.</p>';
-    } else {
-        console.error('Content div not found');
-    }
-});
+// This would be triggered by some user action, like pressing a button
+function startCasting() {
+    sendMessage('Hello World');
+}
