@@ -17,6 +17,13 @@ castContext.addEventListener(
 // Start the Cast receiver application
 castContext.start(options);
 
+const context = cast.framework.CastContext.getInstance();
+context.setOptions({
+  receiverApplicationId: '0FB43A87',
+  autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+});
+
+
 
 let x, y; // Position of the clock
 let vx, vy; // Velocity of the clock
