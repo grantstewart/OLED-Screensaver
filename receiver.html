@@ -2,13 +2,69 @@
 <html>
 <head>
     <title>Receiver Application</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: black;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    <div id="receiver"></div>
+    <canvas id="clockCanvas"></canvas>
+    <script src="https://www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
     <script>
-        window.onload = () => {
-            const context = cast.framework.CastReceiverContext.getInstance();
-            context.start();
+        const context = cast.framework.CastReceiverContext.getInstance();
+        context.start();
+
+        const canvas = document.getElementById('clockCanvas');
+        const ctx = canvas.getContext('2d');
+        let canvasSize = Math.min(window.innerWidth, window.innerHeight);
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+
+        let x = canvas.width / 2;
+        let y = canvas.height / 2;
+        let angle = 0;
+        const radius = 20;
+        const speed = 0.01; // Radians per frame
+
+        function drawClock() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw clock
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#003300';
+            ctx.stroke();
+
+            // Update clock position
+            angle += speed;
+            x = canvas.width / 2 + (canvas.width / 4 * Math.cos(angle)) - radius;
+            y = canvas.height / 2 + (canvas.height / 4 * Math.sin(angle)) - radius;
+
+            // Request next frame
+            requestAnimationFrame(drawClock);
+        }
+
+        // Start animation
+        drawClock();
+
+        // Handle screen resizing
+        window.onresize = function() {
+            canvasSize = Math.min(window.innerWidth, window.innerHeight);
+            canvas.width = canvasSize;
+            canvas.height = canvasSize;
+            x = canvas.width / 2;
+            y = canvas.height / 2;
         };
     </script>
 </body>
