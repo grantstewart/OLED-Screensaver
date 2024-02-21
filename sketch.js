@@ -1,3 +1,23 @@
+// Initialize Cast receiver context
+const castContext = cast.framework.CastReceiverContext.getInstance();
+
+// Set up the Cast receiver context options
+const options = new cast.framework.CastReceiverOptions();
+options.statusText = 'Ready to display';
+options.maxInactivity = 3600; // seconds before closing the app due to inactivity
+
+// Handle the system state change events
+castContext.addEventListener(
+  cast.framework.system.EventType.SYSTEM_STATE_CHANGED,
+  function(event) {
+    console.log(`Received system state change event: ${event.data}`);
+  }
+);
+
+// Start the Cast receiver application
+castContext.start(options);
+
+
 let x, y; // Position of the clock
 let vx, vy; // Velocity of the clock
 let clockSize; // Size of the clock
