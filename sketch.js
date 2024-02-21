@@ -88,3 +88,12 @@ castContext.addCustomMessageListener(namespace, (event) => {
   // Handle the message. For example, start or stop the screensaver based on the message
 });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const context = cast.framework.CastContext.getInstance();
+    context.setOptions({
+        receiverApplicationId: '0FB43A87',
+        autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+    });
+});
+
