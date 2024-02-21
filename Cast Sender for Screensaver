@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cast Sender for Screensaver</title>
+    <script src="//www.gstatic.com/cast/sdk/libs/sender/1.0/cast_framework.js"></script>
+</head>
+<body>
+    <button id="castButton">Cast</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const context = cast.framework.CastContext.getInstance();
+            context.setOptions({
+                receiverApplicationId: 'YOUR_APPLICATION_ID', // Replace with your actual App ID
+                autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+            });
+
+            const castButton = document.getElementById('castButton');
+            castButton.addEventListener('click', () => {
+                context.requestSession().then(
+                  () => console.log('Cast session started'),
+                  (error) => console.error('Error starting cast session:', error)
+                );
+            });
+        });
+    </script>
+</body>
+</html>
