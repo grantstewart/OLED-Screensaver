@@ -16,11 +16,12 @@ function initializeCastApi() {
 
         // Setup the Cast button click handler
         const castButton = document.getElementById('castButton');
-        castButton.addEventListener('click', () => {
-            cast.framework.CastContext.getInstance().requestSession().catch((err) => {
-                console.error('Cast request session failed', err);
-            });
-        });
+castButton.addEventListener('click', () => {
+    cast.framework.CastContext.getInstance().requestSession().catch((err) => {
+        console.error('Cast request session failed', err);
+    });
+});
+
     } else {
         console.error('Cast SDK not available');
     }
