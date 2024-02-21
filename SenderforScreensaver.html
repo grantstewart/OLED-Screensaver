@@ -13,8 +13,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const context = cast.framework.CastContext.getInstance();
         context.setOptions({
-            receiverApplicationId: 'CC1AD845', // Default Media Receiver for testing
-            // Removed the autoJoinPolicy to use the default value
+            receiverApplicationId: 'CC1AD845', // Use your Application ID
         });
 
         document.getElementById('castButton').addEventListener('click', () => {
@@ -26,6 +25,7 @@
         });
     });
 </script>
+
 
 </body>
 </html>
