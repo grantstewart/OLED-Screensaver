@@ -19,12 +19,19 @@ function initializeCastApi() {
 
 // Example function to send a message to the receiver
 function sendMessage(message) {
-    const session = cast.framework.CastContext.getInstance().getCurrentSession();
-    session.sendMessage('urn:x-cast:com.example.custom', message).then(
-        function() { console.log('Message sent: ', message); },
-        function(error) { console.log('Error sending message: ', error); }
-    );
+    const castContext = cast.framework.CastContext.getInstance();
+    const session = castContext.getCurrentSession();
+
+    if(session) {
+        session.sendMessage('urn:x-cast:com.example.custom', message).then(
+            function() { console.log('Message sent: ', message); },
+            function(error) { console.log('Error sending message: ', error); }
+        );
+    } else {
+        console.log('No Cast session is active. Unable to send message.');
+    }
 }
+
 
 // This would be triggered by some user action, like pressing a button
 function startCasting() {
