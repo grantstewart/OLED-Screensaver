@@ -16,13 +16,15 @@
                 receiverApplicationId: 'CC1AD845',
                 autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
             });
-
-            document.getElementById('castButton').addEventListener('click', () => {
-                context.requestSession().then(
+document.getElementById('castButton').addEventListener('click', () => {
+    console.log('Cast button clicked');
+    context.requestSession().then(
                     () => console.log('Cast session started'),
                     (error) => console.error('Error starting cast session:', error)
                 );
-            });
+});
+
+            
         });
     </script>
 </body>
