@@ -33,7 +33,25 @@ function sendMessage(message) {
 }
 
 
-// This would be triggered by some user action, like pressing a button
 function startCasting() {
-    sendMessage('Hello World');
+    const castContext = cast.framework.CastContext.getInstance();
+    // Check if a session is already available
+    if (!castContext.getCurrentSession()) {
+        // Listen for session state changes to know when a session is started
+        castContext.addEventListener(
+            cast.framework.CastContextEventType.SESSION_STATE_CHANGED,
+            function(event) {
+                if (event.sessionState == cast.framework.SessionState.SESSION_STARTED) {
+                    sendMessage('Hello World');
+                }
+            }
+        );
+        // Attempt to start a session - this might involve user interaction
+        castContext.requestSession().catch(function(error) {
+            console.log('Error requesting Cast session: ', error);
+        });
+    } else {
+        // If a session is already active, send the message
+        sendMessage('Hello World');
+    }
 }
