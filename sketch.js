@@ -6,24 +6,8 @@ const options = new cast.framework.CastReceiverOptions();
 options.statusText = 'Ready to display';
 options.maxInactivity = 3600; // seconds before closing the app due to inactivity
 
-// Handle the system state change events
-castContext.addEventListener(
-  cast.framework.system.EventType.SYSTEM_STATE_CHANGED,
-  function(event) {
-    console.log(`Received system state change event: ${event.data}`);
-  }
-);
-
 // Start the Cast receiver application
 castContext.start(options);
-
-const context = cast.framework.CastContext.getInstance();
-context.setOptions({
-  receiverApplicationId: '0FB43A87',
-  autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-});
-
-
 
 let x, y; // Position of the clock
 let vx, vy; // Velocity of the clock
@@ -69,31 +53,3 @@ function draw() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
-
-function startCasting() {
-  const castSession = cast.framework.CastContext.getInstance().getCurrentSession();
-  if (castSession) {
-    // A session is already active; handle appropriately
-  } else {
-    // Request casting
-    cast.framework.CastContext.getInstance().requestSession();
-  }
-}
-
-// Add to your receiver script
-const namespace = 'your_namespace'; // Same as used in the sender app
-
-castContext.addCustomMessageListener(namespace, (event) => {
-  console.log('Received message:', event.data);
-  // Handle the message. For example, start or stop the screensaver based on the message
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const context = cast.framework.CastContext.getInstance();
-    context.setOptions({
-        receiverApplicationId: '0FB43A87',
-        autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-    });
-});
-
