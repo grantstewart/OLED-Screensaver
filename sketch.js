@@ -27,6 +27,7 @@ function initializeCastApi() {
 }
 
 
+
 // DOMContentLoaded event to ensure the HTML is fully parsed before accessing elements
 document.addEventListener('DOMContentLoaded', function() {
     // Additional logic for your sketch.js content
