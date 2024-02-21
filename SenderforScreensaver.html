@@ -9,23 +9,23 @@
     <h1>Sender App</h1>
     <button id="castButton">Cast</button>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const context = cast.framework.CastContext.getInstance();
-            context.setOptions({
-                receiverApplicationId: 'CC1AD845',
-                autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-            });
-document.getElementById('castButton').addEventListener('click', () => {
-    console.log('Cast button clicked');
-    context.requestSession().then(
-                    () => console.log('Cast session started'),
-                    (error) => console.error('Error starting cast session:', error)
-                );
-});
-
-            
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const context = cast.framework.CastContext.getInstance();
+        context.setOptions({
+            receiverApplicationId: 'CC1AD845', // Default Media Receiver for testing
+            // Removed the autoJoinPolicy to use the default value
         });
-    </script>
+
+        document.getElementById('castButton').addEventListener('click', () => {
+            console.log('Cast button clicked');
+            context.requestSession().then(
+                () => console.log('Cast session started'),
+                (error) => console.error('Error starting cast session:', error)
+            );
+        });
+    });
+</script>
+
 </body>
 </html>
