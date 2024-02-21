@@ -5,6 +5,7 @@ window['__onGCastApiAvailable'] = function(isAvailable) {
     }
 };
 
+
 function initializeCastApi() {
     // Ensure the Cast SDK is loaded
     if (typeof cast !== 'undefined' && typeof chrome !== 'undefined') {
