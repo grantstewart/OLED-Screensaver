@@ -1,15 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Receiver Application</title>
-</head>
-<body>
-    <div id="receiver"></div>
-    <script>
-        window.onload = () => {
-            const context = cast.framework.CastReceiverContext.getInstance();
-            context.start();
-        };
-    </script>
-</body>
-</html>
+window['__onGCastApiAvailable'] = function(isAvailable) {
+    if (isAvailable) {
+        initializeCastApi();
+    }
+};
+
+function initializeCastApi() {
+    cast.framework.CastContext.getInstance().setOptions({
+        receiverApplicationId: chrome.cast.media.0FB43A87,
+        autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+    });
+
+    const castButton = document.getElementById('castButton');
+    castButton.onclick = () => cast.framework.CastContext.getInstance().requestSession();
+}
+
+// Add any additional logic for your sketch.js content below
+document.addEventListener('DOMContentLoaded', function() {
+    // Example content logic
+    const content = document.getElementById('content');
+    content.innerHTML += '<p>Ready to cast. Click the Cast button to start.</p>';
+});
