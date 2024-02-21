@@ -1,36 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chromecast Receiver App</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #000;
-            color: #fff;
-            font-family: Arial, sans-serif;
-        }
-    </style>
+    <title>Chromecast Receiver</title>
 </head>
 <body>
-    <div id="message">Hello World</div>
+    <div id="content"></div>
 
     <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
-    <script type="text/javascript">
-        const castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-        console.log('Starting Receiver Manager');
+    <script>
+        const receiverManager = cast.receiver.CastReceiverManager.getInstance();
+        const messageBus = receiverManager.getCastMessageBus('urn:x-cast:com.example.custom');
 
-        // Handle system volume changes
-        castReceiverManager.onSystemVolumeChanged = function(event) {
-            console.log('System volume changed', event.data['level'], event.data['muted']);
+        receiverManager.onReady = function(event) {
+            console.log('Received Ready event: ', event.data);
+            receiverManager.setApplicationState('Application status is ready...');
         };
 
-        // Initialize the CastReceiverManager with an application status message
-        castReceiverManager.start({statusText: "Application is starting"});
-        console.log('Receiver Manager started');
+        messageBus.onMessage = function(event) {
+            console.log('Message [' + event.senderId + ']: ' + event.data);
+            // Assume the message is a URL for simplicity
+            document.getElementById('content').innerHTML = '<iframe src="' + event.data + '" style="border: none; width: 100%; height: 100%;"></iframe>';
+        };
+
+        receiverManager.start();
     </script>
 </body>
 </html>
