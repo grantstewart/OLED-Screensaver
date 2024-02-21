@@ -69,3 +69,22 @@ function draw() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
+
+function startCasting() {
+  const castSession = cast.framework.CastContext.getInstance().getCurrentSession();
+  if (castSession) {
+    // A session is already active; handle appropriately
+  } else {
+    // Request casting
+    cast.framework.CastContext.getInstance().requestSession();
+  }
+}
+
+// Add to your receiver script
+const namespace = 'your_namespace'; // Same as used in the sender app
+
+castContext.addCustomMessageListener(namespace, (event) => {
+  console.log('Received message:', event.data);
+  // Handle the message. For example, start or stop the screensaver based on the message
+});
+
